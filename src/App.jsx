@@ -4,28 +4,46 @@ const App = () => {
   let [inputValue, setInputValue] = useState('');
   let [output, setOutput] = useState([]);
   let [editArea, setEditArea]=useState(false)
+  let [editingIndex, setEditingIndex] = useState()
+  let [editValue, setEditValue] = useState('')
 
   let handleInput= (e)=>{
     setInputValue(e.target.value)
   }
 
+  let handleEditValue= (e)=>{
+    setEditValue(e.target.value)
+  }
+
   let handleSubmit=()=>{
     setOutput([...output, inputValue])
+    setInputValue('')
   }
 
   let handleDelete = (index)=>{
     setOutput(output.filter((_, i) => i !== index))
   }
 
-  let handleEdit =()=>{
-    setEditArea(true)
+  let handleEdit =(index)=>{
+    setEditArea(true);
+    setEditValue(output[index]);
+    setEditingIndex(index)
+
+  }
+
+  let handleSave=()=>{
+    let updatedOutput = [...output];
+    updatedOutput[editingIndex] = editValue; 
+    setOutput(updatedOutput);
+    setEditArea(false)
+    setEditValue('')
   }
   return (
     <div className='container'>
       <div className='w-[800px] mx-auto border bg-gray-200 shadow-md py-4'>
         <h1 className='text-center font-bold text-[28px] leading-[34px]'>To-Do App</h1>
         <div className='flex gap-2 mt-5 items-center justify-center'>
-        <input onChange={handleInput} type="text" placeholder='Enter Task...' className='w-[700px] px-3 py-3 text-[16px] font-medium border' />
+        <input onChange={handleInput} value={inputValue} type="text" placeholder='Enter Task...' className='w-[700px] px-3 py-3 text-[16px] font-medium border' />
         <button onClick={handleSubmit} className='px-3 py-3 text-[16px] font-medium border bg-teal-300' >Submit</button>
         </div>
         {output.length>0 && (
@@ -49,8 +67,10 @@ const App = () => {
             editArea && (
               <div className='bg-white py-4'>
                 <div className='flex gap-2 mt-5 items-center justify-center '>
-                  <input type="text" className='w-[700px] px-3 py-3 text-[16px] font-medium border border-black bg-transparent' />
-                  <button className='px-3 py-3 text-[16px] font-medium border bg-green-400'>Save</button>
+                  <input onChange={handleEditValue}
+                value={editValue}
+                 type="text" className='w-[700px] px-3 py-3 text-[16px] font-medium border border-black bg-transparent' />
+                  <button onClick={handleSave} className='px-3 py-3 text-[16px] font-medium border bg-green-400'>Save</button>
                 </div>
               </div>
             )
