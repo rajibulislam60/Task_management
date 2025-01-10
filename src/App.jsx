@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 const App = () => {
   let [inputValue, setInputValue] = useState('');
   let [output, setOutput] = useState([]);
-  let [edit, setedit]=useState('')
+  let [editArea, setEditArea]=useState(false)
 
   let handleInput= (e)=>{
     setInputValue(e.target.value)
@@ -17,8 +17,8 @@ const App = () => {
     setOutput(output.filter((_, i) => i !== index))
   }
 
-  let handleEdit =(index)=>{
-    
+  let handleEdit =()=>{
+    setEditArea(true)
   }
   return (
     <div className='container'>
@@ -34,7 +34,7 @@ const App = () => {
             {output.map ((task, index)=>(
           <div key={index}>
             <ul><li className='flex justify-between px-[20px]'>{task}
-              <div>
+              <div className='flex gap-3'>
                 <button onClick={()=>handleEdit(index)}>Edit</button>
                 <button onClick={()=>handleDelete(index)} className='text-red-500'>X</button>
               </div>
@@ -43,6 +43,19 @@ const App = () => {
         ))}
           </div>
         )}
+
+        <div>
+          {
+            editArea && (
+              <div className='bg-white py-4'>
+                <div className='flex gap-2 mt-5 items-center justify-center '>
+                  <input type="text" className='w-[700px] px-3 py-3 text-[16px] font-medium border border-black bg-transparent' />
+                  <button className='px-3 py-3 text-[16px] font-medium border bg-green-400'>Save</button>
+                </div>
+              </div>
+            )
+          }
+        </div>
         
       </div>
       
