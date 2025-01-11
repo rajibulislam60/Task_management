@@ -38,13 +38,29 @@ const App = () => {
     setEditArea(false)
     setEditValue('')
   }
+
+  const handleInputKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      handleSubmit();
+    }
+  };
+
+  const handleEditKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      handleSave();
+    }
+  };
+
   return (
     <div className='container'>
-      <div className='w-[800px] mx-auto border bg-gray-200 shadow-md py-4'>
+      <div className='w-[800px] mx-auto border bg-gray-200 shadow-md py-4 mt-5 relative'>
         <h1 className='text-center font-bold text-[28px] leading-[34px]'>To-Do App</h1>
         <div className='flex gap-2 mt-5 items-center justify-center'>
-        <input onChange={handleInput} value={inputValue} type="text" placeholder='Enter Task...' className='w-[700px] px-3 py-3 text-[16px] font-medium border' />
-        <button onClick={handleSubmit} className='px-3 py-3 text-[16px] font-medium border bg-teal-300' >Submit</button>
+        <input onChange={handleInput} 
+        onKeyPress={handleInputKeyPress}
+         value={inputValue} type="text" placeholder='Enter Task...' className='w-[700px] px-3 py-3 text-[16px] font-medium border' />
+        <button onClick={handleSubmit} 
+        className='px-3 py-3 text-[16px] font-medium border bg-teal-300' >Submit</button>
         </div>
         {output.length>0 && (
           <div>
@@ -61,17 +77,20 @@ const App = () => {
         ))}
           </div>
         )}
-
+{/* ---------------------------edit area------------------------ */}
         <div>
           {
             editArea && (
-              <div className='bg-white py-4'>
+              <div className='fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center'>
+                <div className=' bg-white py-4 px-3'>
                 <div className='flex gap-2 mt-5 items-center justify-center '>
                   <input onChange={handleEditValue}
+                  onKeyPress={handleEditKeyPress}
                 value={editValue}
                  type="text" className='w-[700px] px-3 py-3 text-[16px] font-medium border border-black bg-transparent' />
                   <button onClick={handleSave} className='px-3 py-3 text-[16px] font-medium border bg-green-400'>Save</button>
                 </div>
+              </div>
               </div>
             )
           }
